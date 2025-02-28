@@ -245,7 +245,8 @@ main:                                   # @main
 	j	.LBB4_1
 .LBB4_1:                                # =>This Inner Loop Header: Depth=1
 	lw	a0, -24(s0)
-	li	a1, 69
+	lui	a1, 2
+	addi	a1, a1, 1807
 	blt	a1, a0, .LBB4_3
 	j	.LBB4_2
 .LBB4_2:                                #   in Loop: Header=BB4_1 Depth=1
@@ -258,15 +259,6 @@ main:                                   # @main
 	call	trigger
 	lw	a0, -20(s0)
 	call	pulse_area
-	lw	a1, -16(s0)
-	lw	a2, -20(s0)
-	lui	a0, %hi(out)
-	lw	a3, %lo(out)(a0)
-	lui	a0, %hi(area)
-	lw	a4, %lo(area)(a0)
-	lui	a0, %hi(.L.str)
-	addi	a0, a0, %lo(.L.str)
-	call	printf
 	lw	a0, -24(s0)
 	addi	a0, a0, 1
 	sw	a0, -24(s0)
@@ -350,12 +342,6 @@ FIR.val4:
 pulse_area.start:
 	.word	0                               # 0x0
 	.size	pulse_area.start, 4
-
-	.type	.L.str,@object                  # @.str
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.L.str:
-	.asciz	"%03d %03d %03d %03d\n"
-	.size	.L.str, 21
 
 	.ident	"clang version 19.1.7 (Fedora 19.1.7-2.fc41)"
 	.section	".note.GNU-stack","",@progbits

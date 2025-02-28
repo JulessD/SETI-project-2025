@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <time.h>
 
-#define MAX_SAMPLES 70  // Maximum number of samples
+#define MAX_SAMPLES 10000  // Maximum number of samples
 #define FIR_FILTER_SIZE 5 // FIR filter size
 #define HIGH_THRESHOLD 12// Upper threshold for Schmitt trigger
 #define LOW_THRESHOLD 11  // Lower threshold for Schmitt trigger
@@ -85,7 +85,7 @@ int main() {
         trigger(filtered_sample); 
         pulse_area(filtered_sample);
 
-        printf("%03d %03d %03d %03d\n", currentSample, filtered_sample, out, area);
+        //printf("%03d %03d %03d %03d\n", currentSample, filtered_sample, out, area);
         count++;
     }
     return 0;

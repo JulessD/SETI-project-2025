@@ -210,36 +210,28 @@ main:                                   # @main
 	sw	x129, 28(x130)                      # 4-byte Folded Spill
 	sw	x136, 24(x130)                      # 4-byte Folded Spill
 	addi	x136, x130, 32
-	mv	x143, zero		             # replace --	sw	zero, -12(x136)
-	mv	x144, zero		             # replace --	sw	zero, -24(x136)
+	mv	x140, zero		             # replace --	sw	zero, -12(x136)
+	mv	x141, zero		             # replace --	sw	zero, -24(x136)
 	j	.LBB4_1
 .LBB4_1:                                # =>This Inner Loop Header: Depth=1
-	mv	x138, x144		           # replace --	lw	x138, -24(x136)
-	li	x139, 69
+	mv	x138, x141		           # replace --	lw	x138, -24(x136)
+	lui	x139, 2
+	addi	x139, x139, 1807
 	blt	x139, x138, .LBB4_3
 	j	.LBB4_2
 .LBB4_2:                                #   in Loop: Header=BB4_1 Depth=1
 	call	getData
-	mv	x145, x138		             # replace --	sw	x138, -16(x136)
-	mv	x138, x145		           # replace --	lw	x138, -16(x136)
+	mv	x142, x138		             # replace --	sw	x138, -16(x136)
+	mv	x138, x142		           # replace --	lw	x138, -16(x136)
 	call	FIR
-	mv	x146, x138		             # replace --	sw	x138, -20(x136)
-	mv	x138, x146		           # replace --	lw	x138, -20(x136)
+	mv	x143, x138		             # replace --	sw	x138, -20(x136)
+	mv	x138, x143		           # replace --	lw	x138, -20(x136)
 	call	trigger
-	mv	x138, x146		           # replace --	lw	x138, -20(x136)
+	mv	x138, x143		           # replace --	lw	x138, -20(x136)
 	call	pulse_area
-	mv	x139, x145		           # replace --	lw	x139, -16(x136)
-	mv	x140, x146		           # replace --	lw	x140, -20(x136)
-	lui	x138, %hi(out)
-	lw	x141, %lo(out)(x138)
-	lui	x138, %hi(area)
-	lw	x142, %lo(area)(x138)
-	lui	x138, %hi(.L.str)
-	addi	x138, x138, %lo(.L.str)
-	call	printf
-	mv	x138, x144		           # replace --	lw	x138, -24(x136)
+	mv	x138, x141		           # replace --	lw	x138, -24(x136)
 	addi	x138, x138, 1
-	mv	x144, x138		             # replace --	sw	x138, -24(x136)
+	mv	x141, x138		             # replace --	sw	x138, -24(x136)
 	j	.LBB4_1
 .LBB4_3:
 	li	x138, 0
@@ -320,12 +312,6 @@ FIR.val4:
 pulse_area.start:
 	.word	0                               # 0x0
 	.size	pulse_area.start, 4
-
-	.type	.L.str,@object                  # @.str
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.L.str:
-	.asciz	"%03d %03d %03d %03d\n"
-	.size	.L.str, 21
 
 	.ident	"clang version 19.1.7 (Fedora 19.1.7-2.fc41)"
 	.section	".note.GNU-stack","",@progbits
