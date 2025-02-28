@@ -3,11 +3,11 @@ CLANG=clang
 OPT=opt
 DOT=dot
 LLC=llc
-SYSROOT=/opt/riscv/riscv64-unknown-elf
+SYSROOT=/opt/riscv/riscv32-unknown-elf
 GCC_TOOLCHAIN=/opt/riscv
-TARGET=riscv64
-MARCH=rv64gc
-LD=/opt/riscv/bin/riscv64-unknown-elf-ld
+TARGET=riscv32
+MARCH=rv32gc
+LD=/opt/riscv/bin/riscv32-unknown-elf-ld
 CFILE ?= FIR.c
 LLFILE=$(CFILE:.c=.ll)
 ASMFILE=$(CFILE:.c=.s)

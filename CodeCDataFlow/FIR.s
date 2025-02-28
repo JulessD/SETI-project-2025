@@ -1,6 +1,6 @@
 	.text
 	.attribute	4, 16
-	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0"
+	.attribute	5, "rv32i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0"
 	.file	"FIR.c"
 	.option	push
 	.option	arch, +a, +c, +d, +f, +m, +zicsr, +zifencei, +zmmul
@@ -10,8 +10,8 @@
 getData:                                # @getData
 # %bb.0:
 	addi	x2, x2, -16
-	sd	x1, 8(x2)                       # 8-byte Folded Spill
-	sd	x8, 0(x2)                       # 8-byte Folded Spill
+	sw	x1, 12(x2)                      # 4-byte Folded Spill
+	sw	x8, 8(x2)                       # 4-byte Folded Spill
 	addi	x8, x2, 16
 	lui	x10, %hi(getData.count)
 	lw	x10, %lo(getData.count)(x10)
@@ -25,7 +25,7 @@ getData:                                # @getData
 .LBB0_2:
 	lui	x10, %hi(getData.count)
 	lw	x11, %lo(getData.count)(x10)
-	addiw	x11, x11, 1
+	addi	x11, x11, 1
 	sw	x11, %lo(getData.count)(x10)
 	j	.LBB0_3
 .LBB0_3:
@@ -36,8 +36,8 @@ getData:                                # @getData
 	addi	x11, x11, %lo(rddata)
 	add	x10, x10, x11
 	lw	x10, 0(x10)
-	ld	x1, 8(x2)                       # 8-byte Folded Reload
-	ld	x8, 0(x2)                       # 8-byte Folded Reload
+	lw	x1, 12(x2)                      # 4-byte Folded Reload
+	lw	x8, 8(x2)                       # 4-byte Folded Reload
 	addi	x2, x2, 16
 	ret
 .Lfunc_end0:
@@ -52,8 +52,8 @@ getData:                                # @getData
 FIR:                                    # @FIR
 # %bb.0:
 	addi	x34, x34, -16
-	sd	x33, 8(x34)                       # 8-byte Folded Spill
-	sd	x40, 0(x34)                       # 8-byte Folded Spill
+	sw	x33, 12(x34)                      # 4-byte Folded Spill
+	sw	x40, 8(x34)                       # 4-byte Folded Spill
 	addi	x40, x34, 16
 	lui	x43, %hi(FIR.val1)
 	lw	x44, %lo(FIR.val1)(x43)
@@ -71,18 +71,18 @@ FIR:                                    # @FIR
 	sw	x42, %lo(FIR.val4)(x47)
 	lw	x42, %lo(FIR.val0)(x48)
 	lw	x43, %lo(FIR.val1)(x43)
-	slliw	x43, x43, 1
-	addw	x42, x42, x43
+	slli	x43, x43, 1
+	add	x42, x42, x43
 	lw	x43, %lo(FIR.val2)(x44)
-	slliw	x43, x43, 2
+	slli	x43, x43, 2
 	lw	x44, %lo(FIR.val3)(x46)
-	slliw	x44, x44, 1
-	addw	x43, x43, x44
-	addw	x42, x42, x43
+	slli	x44, x44, 1
+	add	x43, x43, x44
+	add	x42, x42, x43
 	lw	x43, %lo(FIR.val4)(x47)
-	addw	x42, x42, x43
-	ld	x33, 8(x34)                       # 8-byte Folded Reload
-	ld	x40, 0(x34)                       # 8-byte Folded Reload
+	add	x42, x42, x43
+	lw	x33, 12(x34)                      # 4-byte Folded Reload
+	lw	x40, 8(x34)                       # 4-byte Folded Reload
 	addi	x34, x34, 16
 	ret
 .Lfunc_end1:
@@ -96,17 +96,17 @@ FIR:                                    # @FIR
 	.type	trigger,@function
 trigger:                                # @trigger
 # %bb.0:
-	addi	x66, x66, -32
-	sd	x65, 24(x66)                      # 8-byte Folded Spill
-	sd	x72, 16(x66)                      # 8-byte Folded Spill
-	addi	x72, x66, 32
-	mv	x76, x74		             # replace --	sw	x74, -20(x72)
+	addi	x66, x66, -16
+	sw	x65, 12(x66)                      # 4-byte Folded Spill
+	sw	x72, 8(x66)                       # 4-byte Folded Spill
+	addi	x72, x66, 16
+	mv	x76, x74		             # replace --	sw	x74, -12(x72)
 	lui	x74, %hi(out)
 	lw	x74, %lo(out)(x74)
 	bnez	x74, .LBB2_3
 	j	.LBB2_1
 .LBB2_1:
-	mv	x74, x76		           # replace --	lw	x74, -20(x72)
+	mv	x74, x76		           # replace --	lw	x74, -12(x72)
 	li	x75, 13
 	blt	x74, x75, .LBB2_3
 	j	.LBB2_2
@@ -122,7 +122,7 @@ trigger:                                # @trigger
 	bne	x74, x75, .LBB2_6
 	j	.LBB2_4
 .LBB2_4:
-	mv	x74, x76		           # replace --	lw	x74, -20(x72)
+	mv	x74, x76		           # replace --	lw	x74, -12(x72)
 	li	x75, 10
 	blt	x75, x74, .LBB2_6
 	j	.LBB2_5
@@ -133,9 +133,9 @@ trigger:                                # @trigger
 .LBB2_6:
 	j	.LBB2_7
 .LBB2_7:
-	ld	x65, 24(x66)                      # 8-byte Folded Reload
-	ld	x72, 16(x66)                      # 8-byte Folded Reload
-	addi	x66, x66, 32
+	lw	x65, 12(x66)                      # 4-byte Folded Reload
+	lw	x72, 8(x66)                       # 4-byte Folded Reload
+	addi	x66, x66, 16
 	ret
 .Lfunc_end2:
 	.size	trigger, .Lfunc_end2-trigger
@@ -148,11 +148,11 @@ trigger:                                # @trigger
 	.type	pulse_area,@function
 pulse_area:                             # @pulse_area
 # %bb.0:
-	addi	x98, x98, -32
-	sd	x97, 24(x98)                      # 8-byte Folded Spill
-	sd	x104, 16(x98)                      # 8-byte Folded Spill
-	addi	x104, x98, 32
-	mv	x109, x106		             # replace --	sw	x106, -20(x104)
+	addi	x98, x98, -16
+	sw	x97, 12(x98)                      # 4-byte Folded Spill
+	sw	x104, 8(x98)                       # 4-byte Folded Spill
+	addi	x104, x98, 16
+	mv	x109, x106		             # replace --	sw	x106, -12(x104)
 	lui	x106, %hi(out)
 	lw	x106, %lo(out)(x106)
 	li	x107, 1
@@ -169,10 +169,10 @@ pulse_area:                             # @pulse_area
 	sw	x107, %lo(pulse_area.start)(x106)
 	j	.LBB3_3
 .LBB3_3:
-	mv	x106, x109		           # replace --	lw	x106, -20(x104)
+	mv	x106, x109		           # replace --	lw	x106, -12(x104)
 	lui	x107, %hi(area)
 	lw	x108, %lo(area)(x107)
-	addw	x106, x106, x108
+	add	x106, x106, x108
 	sw	x106, %lo(area)(x107)
 	j	.LBB3_7
 .LBB3_4:
@@ -191,9 +191,9 @@ pulse_area:                             # @pulse_area
 .LBB3_6:
 	j	.LBB3_7
 .LBB3_7:
-	ld	x97, 24(x98)                      # 8-byte Folded Reload
-	ld	x104, 16(x98)                      # 8-byte Folded Reload
-	addi	x98, x98, 32
+	lw	x97, 12(x98)                      # 4-byte Folded Reload
+	lw	x104, 8(x98)                       # 4-byte Folded Reload
+	addi	x98, x98, 16
 	ret
 .Lfunc_end3:
 	.size	pulse_area, .Lfunc_end3-pulse_area
@@ -207,29 +207,29 @@ pulse_area:                             # @pulse_area
 main:                                   # @main
 # %bb.0:
 	addi	x130, x130, -32
-	sd	x129, 24(x130)                      # 8-byte Folded Spill
-	sd	x136, 16(x130)                      # 8-byte Folded Spill
+	sw	x129, 28(x130)                      # 4-byte Folded Spill
+	sw	x136, 24(x130)                      # 4-byte Folded Spill
 	addi	x136, x130, 32
-	mv	x143, zero		             # replace --	sw	zero, -20(x136)
-	mv	x144, zero		             # replace --	sw	zero, -32(x136)
+	mv	x143, zero		             # replace --	sw	zero, -12(x136)
+	mv	x144, zero		             # replace --	sw	zero, -24(x136)
 	j	.LBB4_1
 .LBB4_1:                                # =>This Inner Loop Header: Depth=1
-	mv	x138, x144		           # replace --	lw	x138, -32(x136)
+	mv	x138, x144		           # replace --	lw	x138, -24(x136)
 	li	x139, 69
 	blt	x139, x138, .LBB4_3
 	j	.LBB4_2
 .LBB4_2:                                #   in Loop: Header=BB4_1 Depth=1
 	call	getData
-	mv	x145, x138		             # replace --	sw	x138, -24(x136)
-	mv	x138, x145		           # replace --	lw	x138, -24(x136)
+	mv	x145, x138		             # replace --	sw	x138, -16(x136)
+	mv	x138, x145		           # replace --	lw	x138, -16(x136)
 	call	FIR
-	mv	x146, x138		             # replace --	sw	x138, -28(x136)
-	mv	x138, x146		           # replace --	lw	x138, -28(x136)
+	mv	x146, x138		             # replace --	sw	x138, -20(x136)
+	mv	x138, x146		           # replace --	lw	x138, -20(x136)
 	call	trigger
-	mv	x138, x146		           # replace --	lw	x138, -28(x136)
+	mv	x138, x146		           # replace --	lw	x138, -20(x136)
 	call	pulse_area
-	mv	x139, x145		           # replace --	lw	x139, -24(x136)
-	mv	x140, x146		           # replace --	lw	x140, -28(x136)
+	mv	x139, x145		           # replace --	lw	x139, -16(x136)
+	mv	x140, x146		           # replace --	lw	x140, -20(x136)
 	lui	x138, %hi(out)
 	lw	x141, %lo(out)(x138)
 	lui	x138, %hi(area)
@@ -237,14 +237,14 @@ main:                                   # @main
 	lui	x138, %hi(.L.str)
 	addi	x138, x138, %lo(.L.str)
 	call	printf
-	mv	x138, x144		           # replace --	lw	x138, -32(x136)
-	addiw	x138, x138, 1
-	mv	x144, x138		             # replace --	sw	x138, -32(x136)
+	mv	x138, x144		           # replace --	lw	x138, -24(x136)
+	addi	x138, x138, 1
+	mv	x144, x138		             # replace --	sw	x138, -24(x136)
 	j	.LBB4_1
 .LBB4_3:
 	li	x138, 0
-	ld	x129, 24(x130)                      # 8-byte Folded Reload
-	ld	x136, 16(x130)                      # 8-byte Folded Reload
+	lw	x129, 28(x130)                      # 4-byte Folded Reload
+	lw	x136, 24(x130)                      # 4-byte Folded Reload
 	addi	x130, x130, 32
 	ret
 .Lfunc_end4:

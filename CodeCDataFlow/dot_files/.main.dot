@@ -1,12 +1,12 @@
 digraph "CFG for 'main' function" {
 	label="CFG for 'main' function";
 
-	Node0x55b1a148d390 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{0:\l|  %1 = alloca i32, align 4\l  %2 = alloca i32, align 4\l  %3 = alloca i32, align 4\l  %4 = alloca i32, align 4\l  store i32 0, ptr %1, align 4\l  store i32 0, ptr %4, align 4\l  br label %5\l}"];
-	Node0x55b1a148d390 -> Node0x55b1a148d730[tooltip="0 -> 5\nProbability 100.00%" ];
-	Node0x55b1a148d730 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{5:\l|  %6 = load i32, ptr %4, align 4\l  %7 = icmp slt i32 %6, 70\l  br i1 %7, label %8, label %21\l|{<s0>T|<s1>F}}"];
-	Node0x55b1a148d730:s0 -> Node0x55b1a148d910[tooltip="5 -> 8\nProbability 96.88%" ];
-	Node0x55b1a148d730:s1 -> Node0x55b1a148d970[tooltip="5 -> 21\nProbability 3.12%" ];
-	Node0x55b1a148d910 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{8:\l|  %9 = call signext i32 @getData()\l  store i32 %9, ptr %2, align 4\l  %10 = load i32, ptr %2, align 4\l  %11 = call signext i32 @FIR(i32 noundef signext %10)\l  store i32 %11, ptr %3, align 4\l  %12 = load i32, ptr %3, align 4\l  call void @trigger(i32 noundef signext %12)\l  %13 = load i32, ptr %3, align 4\l  call void @pulse_area(i32 noundef signext %13)\l  %14 = load i32, ptr %2, align 4\l  %15 = load i32, ptr %3, align 4\l  %16 = load i32, ptr @out, align 4\l  %17 = load i32, ptr @area, align 4\l  %18 = call signext i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef\l... signext %14, i32 noundef signext %15, i32 noundef signext %16, i32 noundef\l... signext %17)\l  %19 = load i32, ptr %4, align 4\l  %20 = add nsw i32 %19, 1\l  store i32 %20, ptr %4, align 4\l  br label %5, !llvm.loop !7\l}"];
-	Node0x55b1a148d910 -> Node0x55b1a148d730[tooltip="8 -> 5\nProbability 100.00%" ];
-	Node0x55b1a148d970 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{21:\l|  ret i32 0\l}"];
+	Node0x55799bf661d0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{0:\l|  %1 = alloca i32, align 4\l  %2 = alloca i32, align 4\l  %3 = alloca i32, align 4\l  %4 = alloca i32, align 4\l  store i32 0, ptr %1, align 4\l  store i32 0, ptr %4, align 4\l  br label %5\l}"];
+	Node0x55799bf661d0 -> Node0x55799bf66570[tooltip="0 -> 5\nProbability 100.00%" ];
+	Node0x55799bf66570 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{5:\l|  %6 = load i32, ptr %4, align 4\l  %7 = icmp slt i32 %6, 70\l  br i1 %7, label %8, label %21\l|{<s0>T|<s1>F}}"];
+	Node0x55799bf66570:s0 -> Node0x55799bf66750[tooltip="5 -> 8\nProbability 96.88%" ];
+	Node0x55799bf66570:s1 -> Node0x55799bf667b0[tooltip="5 -> 21\nProbability 3.12%" ];
+	Node0x55799bf66750 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{8:\l|  %9 = call i32 @getData()\l  store i32 %9, ptr %2, align 4\l  %10 = load i32, ptr %2, align 4\l  %11 = call i32 @FIR(i32 noundef %10)\l  store i32 %11, ptr %3, align 4\l  %12 = load i32, ptr %3, align 4\l  call void @trigger(i32 noundef %12)\l  %13 = load i32, ptr %3, align 4\l  call void @pulse_area(i32 noundef %13)\l  %14 = load i32, ptr %2, align 4\l  %15 = load i32, ptr %3, align 4\l  %16 = load i32, ptr @out, align 4\l  %17 = load i32, ptr @area, align 4\l  %18 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %14, i32\l... noundef %15, i32 noundef %16, i32 noundef %17)\l  %19 = load i32, ptr %4, align 4\l  %20 = add nsw i32 %19, 1\l  store i32 %20, ptr %4, align 4\l  br label %5, !llvm.loop !7\l}"];
+	Node0x55799bf66750 -> Node0x55799bf66570[tooltip="8 -> 5\nProbability 100.00%" ];
+	Node0x55799bf667b0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{21:\l|  ret i32 0\l}"];
 }
