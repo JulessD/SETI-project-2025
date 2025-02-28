@@ -44,5 +44,11 @@ et
 ```
 
 # les registres de return
-les registres pris en arguments par les fonctions et les return sont a0 - a1 - a2 - etc traduit en x11 - x12 - x13 - etc 
+les registres pris en arguments par les fonctions et les return sont a0 - a1 - a2 - etc traduit en x10 -  x11 - x12 - x13 - etc 
+
+# Pour la toolchain RISCV dans le /opt/riscv qui j'utilise
+# en root
+git clone https://github.com/riscv/riscv-gnu-toolchain
+./configure --prefix=/opt/riscv --with-arch=rv32gc --with-abi=ilp32d
+make -j 10
 
