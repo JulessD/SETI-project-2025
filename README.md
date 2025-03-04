@@ -26,7 +26,7 @@ python RemoveStackASM.py
 
   ```
 
-## RemoveStackASM n'enleve pas les allocations/deallocation de stacks 
+## RemoveStackASM enleve les allocations/deallocation de stacks 
 
 pour la FIR
 ```
@@ -42,6 +42,8 @@ et
 	addi	x34, x34, 16
 
 ```
+sont suppr
+
 
 # les registres de return
 les registres pris en arguments par les fonctions et les return sont a0 - a1 - a2 - etc traduit en x10 -  x11 - x12 - x13 - etc 
