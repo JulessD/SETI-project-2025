@@ -45,10 +45,10 @@ et
 sont suppr
 
 
-# les registres de return
+## les registres de return
 les registres pris en arguments par les fonctions et les return sont a0 - a1 - a2 - etc traduit en x10 -  x11 - x12 - x13 - etc 
 
-# Pour la toolchain RISCV dans le /opt/riscv qui j'utilise
+## Pour la toolchain RISCV dans le /opt/riscv que j'utilise
 en root
 ```
 git clone https://github.com/riscv/riscv-gnu-toolchain
@@ -56,5 +56,5 @@ git clone https://github.com/riscv/riscv-gnu-toolchain
 make -j 10
 ``` 
 
-# Variables global et static
+## Variables global et static
 Les variables globals (l'etat du trigger et le out des aires sous la courbes) et static (Les valeurs du FIR et le count du getData) utilise encore  des pointeurs  
