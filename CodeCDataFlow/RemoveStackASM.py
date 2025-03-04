@@ -44,12 +44,30 @@ register_convention =	{
 }
 availabe_registers = ["a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11", "t0", "t1", "t2", "t3", "t4", "t5", "t6" ]
 
-def dename_reg(RI_lines, k):
+
+def remove_stack_declaration(ASM_lines, k):
+    for i in range(functions_s[k]+1, functions_e[k]+1):
+        function_line = ASM_lines[i]
+        if "# 4-byte Folded Spill" in function_line:
+            print(ASM_lines[i-1], ASM_lines[i], ASM_lines[i+1], ASM_lines[i+2])
+            ASM_lines[i-1] = "#rm stack declaration\n"
+            ASM_lines[i] = "#rm stack declaration\n"
+            ASM_lines[i+1] = "#rm stack declaration\n"
+            ASM_lines[i+2] = "#rm stack declaration\n"
+        
+        if "# 4-byte Folded Reload" in function_line:
+            print(ASM_lines[i-1], ASM_lines[i], ASM_lines[i+1], ASM_lines[i+2])
+            ASM_lines[i] = "#rm stack\n"
+            ASM_lines[i+1] = "#rm stack\n"
+            ASM_lines[i+2] = "#rm stack\n"
+                                   
+        
+def dename_reg(ASM_lines, k):
     print("replacing all registers")
     # changing register numbers into base RISC 
     found=0
     for i in range(functions_s[k]+1, functions_e[k]+1):
-        function_line = RI_lines[i]
+        function_line = ASM_lines[i]
         for reg in register_convention:
             if " "+reg in function_line:
                 found+=1
@@ -63,15 +81,15 @@ def dename_reg(RI_lines, k):
                 found+=1
                 new_reg = "x" + str(int(register_convention[reg][1:]) + k*32)
                 function_line = function_line.replace("\t"+reg, "\t"+new_reg)
-        RI_lines[i] = function_line      
+        ASM_lines[i] = function_line      
     print("done : ", found, " reg changes")
 
 
-def replace_nostack(RI_lines):
+def replace_nostack(ASM_lines):
     # replacer
     print("replacing ...")
     for i in range(functions_s[k]+1, functions_e[k]+1):
-        function_line = RI_lines[i]
+        function_line = ASM_lines[i]
         if "lw" in function_line:
             # look for stack index
             for index in stack_indexes:
@@ -79,7 +97,7 @@ def replace_nostack(RI_lines):
                     register_ld = function_line[(function_line.index(",")-2):(function_line.index(","))]
                     if register_ld == "ro":
                         register_ld = "zero"
-                    RI_lines[i] = "\taddw\t" + register_ld + ", " + corr_table[index] + ", x0"  +  "\t\t           # replace --" + function_line
+                    ASM_lines[i] = "\taddw\t" + register_ld + ", " + corr_table[index] + ", x0"  +  "\t\t           # replace --" + function_line
                     break
         elif "lui" in function_line:
             # look for stack index
@@ -88,7 +106,7 @@ def replace_nostack(RI_lines):
                     register_ld = function_line[(function_line.index(",")-2):(function_line.index(","))]
                     if register_ld == "ro":
                         register_ld = "zero"
-                    RI_lines[i] = "\taddi\t" + register_ld + ", " + corr_table[index] + ", x0"  +  "\t\t             # replace --" + function_line
+                    ASM_lines[i] = "\taddi\t" + register_ld + ", " + corr_table[index] + ", x0"  +  "\t\t             # replace --" + function_line
                     break
         elif "ld" in function_line:
             # look for stack index
@@ -97,7 +115,7 @@ def replace_nostack(RI_lines):
                     register_ld = function_line[(function_line.index(",")-2):(function_line.index(","))]
                     if register_ld == "ro":
                         register_ld = "zero"
-                    RI_lines[i] = "\taddi\t" + register_ld + ", " + corr_table[index] + ", x0" +  "\t\t             # replace --" + function_line
+                    ASM_lines[i] = "\taddi\t" + register_ld + ", " + corr_table[index] + ", x0" +  "\t\t             # replace --" + function_line
                     break
         elif "sw" in function_line:
             # look for stack index
@@ -106,7 +124,7 @@ def replace_nostack(RI_lines):
                     register_ld = function_line[(function_line.index(",")-2):(function_line.index(","))]
                     if register_ld == "ro":
                         register_ld = "zero"
-                    RI_lines[i] = "\taddw\t"  + corr_table[index] + ", "  + register_ld + ", x0"  +  "\t\t             # replace --" + function_line
+                    ASM_lines[i] = "\taddw\t"  + corr_table[index] + ", "  + register_ld + ", x0"  +  "\t\t             # replace --" + function_line
                     break
         elif "sd" in function_line and "# 8-byte Folded Spill" not in function_line :
             # look for stack index
@@ -115,7 +133,7 @@ def replace_nostack(RI_lines):
                     register_ld = function_line[(function_line.index(",")-2):(function_line.index(","))]
                     if register_ld == "ro":
                         register_ld = "zero"
-                    RI_lines[i] = "\taddi\t" + corr_table[index]  + ", " + register_ld + ", x0"  +  "\t\t             # replace --" + function_line
+                    ASM_lines[i] = "\taddi\t" + corr_table[index]  + ", " + register_ld + ", x0"  +  "\t\t             # replace --" + function_line
                     break
         elif "sui" in function_line:
             # look for stack index
@@ -124,16 +142,16 @@ def replace_nostack(RI_lines):
                     register_ld = function_line[(function_line.index(",")-2):(function_line.index(","))]
                     if register_ld == "ro":
                         register_ld = "zero"
-                    RI_lines[i] = "\taddi\t" + corr_table[index] + ", " + register_ld + ", x0"  +  "\t\t             # replace --" + function_line
+                    ASM_lines[i] = "\taddi\t" + corr_table[index] + ", " + register_ld + ", x0"  +  "\t\t             # replace --" + function_line
                     break
     
     print("done")
     
-def replace_nostack_v2(RI_lines):
+def replace_nostack_v2(ASM_lines, k):
     # replacer
     print("replacing ...")
     for i in range(functions_s[k]+1, functions_e[k]+1):
-        function_line = RI_lines[i]
+        function_line = ASM_lines[i]
         if "lw" in function_line or "lui" in function_line or "ld" in function_line:
             # look for stack index
             for index in stack_indexes:
@@ -141,7 +159,7 @@ def replace_nostack_v2(RI_lines):
                     register_ld = function_line[(function_line.index(",")-2):(function_line.index(","))]
                     if register_ld == "ro":
                         register_ld = "zero"
-                    RI_lines[i] = "\tmv\t" + register_ld + ", " + corr_table[index]  + "\t\t           # replace --" + function_line
+                    ASM_lines[i] = "\tmv\t" + register_ld + ", " + corr_table[index]  + "\t\t           # replace --" + function_line
                     break
         elif "sw" in function_line or ("sd" in function_line and "# 8-byte Folded Spill" not in function_line) or "sui" in function_line:
             # look for stack index
@@ -150,7 +168,7 @@ def replace_nostack_v2(RI_lines):
                     register_ld = function_line[(function_line.index(",")-2):(function_line.index(","))]
                     if register_ld == "ro":
                         register_ld = "zero"
-                    RI_lines[i] = "\tmv\t"  + corr_table[index] + ", "  + register_ld  + "\t\t             # replace --" + function_line
+                    ASM_lines[i] = "\tmv\t"  + corr_table[index] + ", "  + register_ld  + "\t\t             # replace --" + function_line
                     break
     
     print("done")
@@ -158,7 +176,7 @@ def replace_nostack_v2(RI_lines):
     
     
 with open('FIR.s', 'r') as f:
-    RI_lines = f.readlines()
+    ASM_lines = f.readlines()
     
 function_num = 0
 function_start_l = 0
@@ -169,7 +187,7 @@ functions_e = [] #stop
 functions_n = [] #name
 
 #find function
-for i, line in enumerate(RI_lines):
+for i, line in enumerate(ASM_lines):
     if "@function" in line:
         function_start_l = i
         functions_s.append(function_start_l)
@@ -192,13 +210,13 @@ for k in range(len(functions_s)):
     corr_table = {}
     
     #get stack size
-    stack_size_line = RI_lines[functions_s[k]+3]
+    stack_size_line = ASM_lines[functions_s[k]+3]
     stack_size = stack_size_line[stack_size_line.index("-")+1:]
     print("stack size : ", stack_size)
     
     # get all index stack usage in the func
     for i in range(functions_s[k]+1, functions_e[k]+1):
-        function_line = RI_lines[i]
+        function_line = ASM_lines[i]
 
         # look for all allocation
         if "(s0)" in function_line and "sp" not in function_line:
@@ -209,7 +227,7 @@ for k in range(len(functions_s)):
     
     #get available registers 
     for i in range(functions_s[k]+1, functions_e[k]+1):
-        function_line = RI_lines[i]
+        function_line = ASM_lines[i]
         for reg in availabe_registers:
             if reg in function_line:
                 availabe_registers.remove(reg)  
@@ -231,14 +249,15 @@ for k in range(len(functions_s)):
         print(stack_indexes[j], " = ", availabe_registers[j], " ")
         
     
-    replace_nostack_v2(RI_lines)
-    dename_reg(RI_lines, k)
+    replace_nostack_v2(ASM_lines, k)
+    dename_reg(ASM_lines, k)
     
+    remove_stack_declaration(ASM_lines, k)
     
 print("-------------------")
 print("writing ASM")
 with open('FIR.s', 'w') as f:
-    for line in RI_lines:
+    for line in ASM_lines:
         f.write(f"{line}")
 print("done")
             

@@ -9,10 +9,10 @@
 	.type	getData,@function
 getData:                                # @getData
 # %bb.0:
-	addi	x2, x2, -16
-	sw	x1, 12(x2)                      # 4-byte Folded Spill
-	sw	x8, 8(x2)                       # 4-byte Folded Spill
-	addi	x8, x2, 16
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
 	lui	x10, %hi(getData.count)
 	lw	x10, %lo(getData.count)(x10)
 	li	x11, 4
@@ -36,9 +36,9 @@ getData:                                # @getData
 	addi	x11, x11, %lo(rddata)
 	add	x10, x10, x11
 	lw	x10, 0(x10)
-	lw	x1, 12(x2)                      # 4-byte Folded Reload
-	lw	x8, 8(x2)                       # 4-byte Folded Reload
-	addi	x2, x2, 16
+#rm stack
+#rm stack
+#rm stack
 	ret
 .Lfunc_end0:
 	.size	getData, .Lfunc_end0-getData
@@ -51,10 +51,10 @@ getData:                                # @getData
 	.type	FIR,@function
 FIR:                                    # @FIR
 # %bb.0:
-	addi	x34, x34, -16
-	sw	x33, 12(x34)                      # 4-byte Folded Spill
-	sw	x40, 8(x34)                       # 4-byte Folded Spill
-	addi	x40, x34, 16
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
 	lui	x43, %hi(FIR.val1)
 	lw	x44, %lo(FIR.val1)(x43)
 	lui	x48, %hi(FIR.val0)
@@ -81,9 +81,9 @@ FIR:                                    # @FIR
 	add	x42, x42, x43
 	lw	x43, %lo(FIR.val4)(x47)
 	add	x42, x42, x43
-	lw	x33, 12(x34)                      # 4-byte Folded Reload
-	lw	x40, 8(x34)                       # 4-byte Folded Reload
-	addi	x34, x34, 16
+#rm stack
+#rm stack
+#rm stack
 	ret
 .Lfunc_end1:
 	.size	FIR, .Lfunc_end1-FIR
@@ -96,10 +96,10 @@ FIR:                                    # @FIR
 	.type	trigger,@function
 trigger:                                # @trigger
 # %bb.0:
-	addi	x66, x66, -16
-	sw	x65, 12(x66)                      # 4-byte Folded Spill
-	sw	x72, 8(x66)                       # 4-byte Folded Spill
-	addi	x72, x66, 16
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
 	mv	x76, x74		             # replace --	sw	x74, -12(x72)
 	lui	x74, %hi(out)
 	lw	x74, %lo(out)(x74)
@@ -133,9 +133,9 @@ trigger:                                # @trigger
 .LBB2_6:
 	j	.LBB2_7
 .LBB2_7:
-	lw	x65, 12(x66)                      # 4-byte Folded Reload
-	lw	x72, 8(x66)                       # 4-byte Folded Reload
-	addi	x66, x66, 16
+#rm stack
+#rm stack
+#rm stack
 	ret
 .Lfunc_end2:
 	.size	trigger, .Lfunc_end2-trigger
@@ -148,10 +148,10 @@ trigger:                                # @trigger
 	.type	pulse_area,@function
 pulse_area:                             # @pulse_area
 # %bb.0:
-	addi	x98, x98, -16
-	sw	x97, 12(x98)                      # 4-byte Folded Spill
-	sw	x104, 8(x98)                       # 4-byte Folded Spill
-	addi	x104, x98, 16
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
 	mv	x109, x106		             # replace --	sw	x106, -12(x104)
 	lui	x106, %hi(out)
 	lw	x106, %lo(out)(x106)
@@ -191,9 +191,9 @@ pulse_area:                             # @pulse_area
 .LBB3_6:
 	j	.LBB3_7
 .LBB3_7:
-	lw	x97, 12(x98)                      # 4-byte Folded Reload
-	lw	x104, 8(x98)                       # 4-byte Folded Reload
-	addi	x98, x98, 16
+#rm stack
+#rm stack
+#rm stack
 	ret
 .Lfunc_end3:
 	.size	pulse_area, .Lfunc_end3-pulse_area
@@ -206,10 +206,10 @@ pulse_area:                             # @pulse_area
 	.type	main,@function
 main:                                   # @main
 # %bb.0:
-	addi	x130, x130, -32
-	sw	x129, 28(x130)                      # 4-byte Folded Spill
-	sw	x136, 24(x130)                      # 4-byte Folded Spill
-	addi	x136, x130, 32
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
+#rm stack declaration
 	mv	x140, zero		             # replace --	sw	zero, -12(x136)
 	mv	x141, zero		             # replace --	sw	zero, -24(x136)
 	j	.LBB4_1
@@ -235,9 +235,9 @@ main:                                   # @main
 	j	.LBB4_1
 .LBB4_3:
 	li	x138, 0
-	lw	x129, 28(x130)                      # 4-byte Folded Reload
-	lw	x136, 24(x130)                      # 4-byte Folded Reload
-	addi	x130, x130, 32
+#rm stack
+#rm stack
+#rm stack
 	ret
 .Lfunc_end4:
 	.size	main, .Lfunc_end4-main
